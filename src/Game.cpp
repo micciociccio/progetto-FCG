@@ -16,7 +16,7 @@ void Game::changeState(std::unique_ptr<State> newState){
 void Game::run(){
 	sf::Clock clock;
 	while(window.isOpen()){
-    	while(const std::optional event=window.pollEvent()){
+    	while(const std::optional<sf::Event> event=window.pollEvent()){
             currentState->handleEvent(*event);   //dispatch dinamico allo stato attivo, con * deferenzio l'optional dell'evento 
         }
         float dt=std::min(clock.restart().asSeconds(), 0.05f);

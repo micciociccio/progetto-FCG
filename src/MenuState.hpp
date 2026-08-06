@@ -1,6 +1,6 @@
 #include "SFML/Graphics.hpp"
-#include "State.hpp"
 #include <vector>
+#include "State.hpp"
 
 class Game;   //forward declaration
 
