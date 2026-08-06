@@ -3,7 +3,7 @@
 
 class State{   //classe astratta pura grazie a metodi virtual e assegnazione pari a 0 
 public:
-    virtual void handleInput(sf::RenderWindow& window)=0;
+    virtual void handleEvent(const sf::Event& event)=0;
     virtual void update(float dt)=0;
     virtual void render(sf::RenderWindow& window)=0;
     virtual ~State()=default;

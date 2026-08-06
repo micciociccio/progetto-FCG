@@ -16,6 +16,7 @@ add_executable(
     aa_game
     src/main.cpp
     src/Game.cpp
+    src/MenuState.cpp
 )
 target_compile_features(aa_game PRIVATE cxx_std_17)
 target_link_libraries(aa_game PRIVATE SFML::Graphics)

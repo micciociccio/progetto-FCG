@@ -2,7 +2,7 @@
 
 int main()
 {
-	Game game(800, 600, "aa");   //stack declaration
+	Game game(480, 800, "aa");   //stack declaration, mobile viewport
 	game.run();
 	return 0;
 }
