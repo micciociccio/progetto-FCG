@@ -1,6 +1,7 @@
 #include "MenuState.hpp"
 #include "State.hpp"
 #include "Game.hpp"
+#include "PlayingState.hpp"
 #include "GraphicsUtils.hpp"
 
 MenuState::MenuState(Game& g)
@@ -35,6 +36,7 @@ void MenuState::handleEvent(const sf::Event& event){
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
             if(selectedIndex==0){}
             else if(selectedIndex==1){
+                game.changeState(std::make_unique<PlayingState>(game));
             }
             else game.requestClose(); 
         }
