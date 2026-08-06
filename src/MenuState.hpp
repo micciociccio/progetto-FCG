@@ -10,7 +10,7 @@ class MenuState : public State{
     sf::Text title;
     std::vector<sf::Text> options;
     int selectedIndex=0;
-    void centerOrigin(sf::Text& t);
+    void updateColors();
     public:
         explicit MenuState(Game& g);
         ~MenuState();

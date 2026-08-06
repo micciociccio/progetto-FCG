@@ -1,8 +1,9 @@
 #include "Game.hpp"
+#include "GraphicsUtils.hpp"
 
 int main()
 {
-	Game game(480, 800, "aa");   //stack declaration, mobile viewport
+	Game game(utils::width, utils::height, "aa");   //stack declaration, mobile viewport
 	game.run();
 	return 0;
 }
