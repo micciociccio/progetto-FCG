@@ -9,12 +9,12 @@ PlayingState::PlayingState(Game& g)
     circle(70.0f),
     numLvl(0){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
-        circle.setPosition({utils::width/2.0f, utils::height/3.5f});
-        for(int i=0; i<5; i++){
+        circle.setPosition({utils::width/2.0f, utils::height/3.2f});
+        for(int i=0; i<15; i++){
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
-            float startY=utils::height-100.0f;
-            dot.setPosition({utils::width/2.0f, startY + static_cast<float>(i) * 38.0f});
+            float startY=utils::height-350.0f;
+            dot.setPosition({utils::width/2.0f, startY + static_cast<float>(i) * 48.0f});
             waitingDots.push_back(dot);   //dots da aggiungere al cerchio
         }
 }
@@ -36,13 +36,14 @@ void PlayingState::update(float dt){
         sf::Vector2f pos=flyingDot->getPosition();
         pos.y-=dt*launchSpeed;
         flyingDot->setPosition(pos);
-        updateWaitingDots(dt);
-        if(pos.y<=360.0f){
-            pos.y=360.0f;
+        if(pos.y<=390.0f){
+            pos.y=390.0f;
             flyingDot->setPosition(pos);
-            attachFlyingDot();
+            if(attachFlyingDot()) return;
         } 
     }
+    //aggiornamento della coda di dots
+    updateWaitingDots(dt);
     //rotazione ad ogni frame dei dots attacheds  
     roundRotation+=sf::degrees(dt*rotationSpeed);
     sf::Vector2f center=circle.getPosition();
@@ -70,7 +71,7 @@ void PlayingState::render(sf::RenderWindow& window){
 void PlayingState::updateWaitingDots(float dt){
     for(size_t i=0; i<waitingDots.size(); i++){
         sf::Vector2f pos=waitingDots[i].getPosition();
-        float targetY=utils::height-100.0f+static_cast<float>(i)*38.0f;
+        float targetY=utils::height-350.0f + static_cast<float>(i) * 48.0f;
         if(pos.y>targetY){
             pos.y=std::max(targetY, pos.y-dt*reloadSpeed);   //se va oltre il target, assegnamo targetY così che non si muova più
             waitingDots[i].setPosition(pos);
@@ -78,20 +79,23 @@ void PlayingState::updateWaitingDots(float dt){
     }
 }
 
-void PlayingState::attachFlyingDot(){
+bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeState() che distrugge lo stato corrente per propagare il cambio
     sf::Vector2f center=circle.getPosition();
     sf::Vector2f toDot=flyingDot->getPosition()-center;
     sf::Angle absoluteAngle=sf::radians(std::atan2(toDot.y, toDot.x));
     AttachedDot newDot{*flyingDot, absoluteAngle-roundRotation};   //offset relativo, in modo che rimanga in quel punto della rotazione
-    if(checkCollision(newDot)){
+    if(checkCollision(newDot)){   //caso 1: gameover il dot ha colpito gli altri in orbita
         game.changeState(std::make_unique<MenuState>(game));
-        return;
+        return true; 
     }
-    else{
-        // if(waitingDots.empty()) game.changeState(std::make_unique<PlayingState>(game)); livello completato
+    else if(waitingDots.empty()){   //caso 2: se non c'è collisione && abbiamo finito i dot da inserire abbiamo vinto
+        game.changeState(std::make_unique<PlayingState>(game)); //livello completato
+        return true;
     }
+    //dot inserito correttamente, altri da lanciare
     attachedDots.push_back(newDot);
     flyingDot.reset();   //torna vuoto, Space ora funziona
+    return false;    
 }
 
 bool PlayingState::checkCollision(const AttachedDot& dot){

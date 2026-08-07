@@ -17,9 +17,9 @@ class PlayingState : public State{
     sf::Angle roundRotation=sf::degrees(0.0f);
     unsigned numLvl;
     static constexpr float launchSpeed=600.0f;
-    static constexpr float reloadSpeed=100.0f;
-    static constexpr float rotationSpeed=150.0f;
-    static constexpr float orbitRadius=134.0f;   //abbiamo circle a 228, la barriera a 360, e considerando la grandezza della pallina otteniamo 134
+    static constexpr float reloadSpeed=220.0f;
+    static constexpr float rotationSpeed=120.0f;
+    static constexpr float orbitRadius=140.0f;   //abbiamo circle a posizione.y=250, la" barriera" a y=390 otteniamo 120
     public:
         explicit PlayingState(Game& g);
         ~PlayingState();
@@ -28,6 +28,6 @@ class PlayingState : public State{
         void render(sf::RenderWindow& window) override;
     private:
         void updateWaitingDots(float dt);
-        void attachFlyingDot();
+        bool attachFlyingDot();
         bool checkCollision(const AttachedDot& dot);
 };
