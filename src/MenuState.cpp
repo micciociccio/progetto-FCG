@@ -6,16 +6,17 @@
 
 MenuState::MenuState(Game& g)
 :   game(g),
-    font("DejavuSansMono-5m7L.ttf"),
-    title(font, "aa", 110),
+    fontTit("assets/DejavuSansMono-5m7L.ttf"),
+    fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
+    title(fontTit, "aa", 110),
     selectedIndex(0){
         utils::centerOrigin(title);
-        title.setPosition({240.0f, 100.0f});
+        title.setPosition({240.0f, 150.0f});
         std::vector<std::string> labels={"levels", "play", "exit"};
         for(std::size_t i=0; i<labels.size(); i++){
-            sf::Text option(font, labels[i], 21);
+            sf::Text option(fontOpt, labels[i], 21);
             utils::centerOrigin(option);
-            option.setPosition({utils::width/2.0f, 360.0f + static_cast<float>(i) * 60.0f});
+            option.setPosition({utils::width/2.0f, 360.0f + static_cast<float>(i) * 80.0f});
             options.push_back(option);
         }
         updateColors();

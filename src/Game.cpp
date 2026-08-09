@@ -1,9 +1,19 @@
 #include "Game.hpp"
 #include "State.hpp"
 #include "MenuState.hpp"
+#include "GraphicsUtils.hpp"
 
 Game::Game(unsigned width, unsigned height, const std::string& title)
-	: window(sf::VideoMode({width, height}), title, sf::Style::Titlebar){
+:   window(sf::VideoMode({width, height}), title, sf::Style::Titlebar),
+    textureBg("assets/background.jpg"),
+    background(textureBg){
+        textureBg.setSmooth(true);
+        sf::Vector2u textureSize=textureBg.getSize();
+        float scale=std::max(   //cover approach, riempiamo tutta la window senza deformare l'immagine
+            utils::width/static_cast<float>(textureSize.x),
+            utils::height/static_cast<float>(textureSize.y)
+        );
+        background.setScale({scale, scale});
 		currentState=std::make_unique<MenuState>(*this);
 }
 
@@ -22,6 +32,7 @@ void Game::run(){
         float dt=std::min(clock.restart().asSeconds(), 0.05f);
         currentState->update(dt);
         window.clear();
+        window.draw(background);
         currentState->render(window);
         window.display();
     }
