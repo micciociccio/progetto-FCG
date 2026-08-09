@@ -6,6 +6,7 @@ class Game;
 struct AttachedDot{
     sf::CircleShape shape;
     sf::Angle offset;   //posizione che evita il "collasso" dei cerchi durante la rotazione
+    sf::VertexArray line;  
 };
 
 class PlayingState : public State{

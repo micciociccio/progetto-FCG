@@ -49,10 +49,10 @@ void PlayingState::update(float dt){
     sf::Vector2f center=circle.getPosition();
     for(AttachedDot& dot : attachedDots){
         sf::Angle totalAngle=roundRotation+dot.offset;
-        sf::Vector2f pos{
-            center.x+orbitRadius*std::cos(totalAngle.asRadians()),
-            center.y+orbitRadius*std::sin(totalAngle.asRadians())
-        };
+        float updateX=center.x+orbitRadius*std::cos(totalAngle.asRadians());
+        float updateY=center.y+orbitRadius*std::sin(totalAngle.asRadians());
+        sf::Vector2f pos{updateX, updateY};
+        dot.line[0].position={updateX, updateY};
         dot.shape.setPosition(pos);
     }
 }
@@ -64,6 +64,7 @@ void PlayingState::render(sf::RenderWindow& window){
     }
     for(AttachedDot& dot : attachedDots){
         window.draw(dot.shape);
+        window.draw(dot.line);
     }
     if(flyingDot) window.draw(*flyingDot);
 }
@@ -93,6 +94,11 @@ bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeStat
         return true;
     }
     //dot inserito correttamente, altri da lanciare
+    //linea collegata dal centro al dot
+    sf::VertexArray linea(sf::PrimitiveType::Lines, 2);
+    linea[0].position={utils::width/2.0f, 390.0f};   //partenza da barriera per raggio dell'orbita dei dots, si modifica durante il giro [0]
+    linea[1].position={utils::width/2.0f, utils::height/3.2f};   //centro di circle
+    newDot.line=linea;
     attachedDots.push_back(newDot);
     flyingDot.reset();   //torna vuoto, Space ora funziona
     return false;    
