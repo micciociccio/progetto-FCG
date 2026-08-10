@@ -2,6 +2,7 @@
 #include "State.hpp"
 #include "Game.hpp"
 #include "MenuState.hpp"
+#include "EndGameState.hpp"
 #include "GraphicsUtils.hpp"
 
 PlayingState::PlayingState(Game& g)
@@ -9,7 +10,7 @@ PlayingState::PlayingState(Game& g)
     circleTexture("assets/circle.png"),
     dotTexture("assets/dot.png"),
     circle(70.0f),
-    numLvl(0){
+    level(1){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
         circle.setTexture(&circleTexture);
@@ -54,9 +55,11 @@ void PlayingState::update(float dt){
     sf::Vector2f center=circle.getPosition();
     for(AttachedDot& dot : attachedDots){
         sf::Angle totalAngle=roundRotation+dot.offset;
-        float updateX=center.x+orbitRadius*std::cos(totalAngle.asRadians());   //orbita del dot e del vertex collegato del dot
+        float updateX=center.x+orbitRadius*std::cos(totalAngle.asRadians());   //orbita del dot (centro del circle)
         float updateY=center.y+orbitRadius*std::sin(totalAngle.asRadians());
         sf::Vector2f pos{updateX, updateY};
+        updateX=center.x+(orbitRadius-dot.shape.getRadius())*std::cos(totalAngle.asRadians());   //orbita del vertex collegato al dot (punto sulla circonferenza del circle, sottraiamo radius)
+        updateY=center.y+(orbitRadius-dot.shape.getRadius())*std::sin(totalAngle.asRadians());
         dot.line[0].position={updateX, updateY};
         updateX=center.x+(orbitRadius-circle.getRadius())*std::cos(totalAngle.asRadians());   //orbita del vertex esterno al circle, sottraiamo infatti il raggio dal centro
         updateY=center.y+(orbitRadius-circle.getRadius())*std::sin(totalAngle.asRadians());
@@ -94,18 +97,17 @@ bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeStat
     sf::Angle absoluteAngle=sf::radians(std::atan2(toDot.y, toDot.x));
     AttachedDot newDot{*flyingDot, absoluteAngle-roundRotation};   //offset relativo, in modo che rimanga in quel punto della rotazione
     if(checkCollision(newDot)){   //caso 1: gameover il dot ha colpito gli altri in orbita
-        //voglio rallenamento dello schermo come faccio?
-        game.changeState(std::make_unique<MenuState>(game));
+        game.changeState(std::make_unique<EndGameState>(game, true));
         return true; 
     }
     else if(waitingDots.empty()){   //caso 2: se non c'è collisione && abbiamo finito i dot da inserire abbiamo vinto
-        game.changeState(std::make_unique<PlayingState>(game)); //livello completato
+        game.changeState(std::make_unique<EndGameState>(game, false)); //livello completato
         return true;
     }
     //dot inserito correttamente, altri da lanciare
     //linea collegata dal centro al dot
     sf::VertexArray linea(sf::PrimitiveType::Lines, 2);
-    linea[0].position={utils::width/2.0f, 390.0f};   //vertex sul dot, ovvero partenza dalla barriera 
+    linea[0].position={utils::width/2.0f, 390.0f-newDot.shape.getRadius()};   //vertex sul dot, ovvero partenza dalla barriera - raggio per limite circonferenza circle 
     linea[1].position={utils::width/2.0f, 320.0f};   //position di circle + 70 radius = 250 + 70 = 320
     newDot.line=linea;
     attachedDots.push_back(newDot);

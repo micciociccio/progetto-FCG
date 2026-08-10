@@ -18,7 +18,7 @@ class PlayingState : public State{
     std::optional<sf::CircleShape> flyingDot;
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);
-    unsigned numLvl;
+    unsigned level;
     static constexpr float launchSpeed=600.0f;
     static constexpr float reloadSpeed=220.0f;
     static constexpr float rotationSpeed=120.0f;
