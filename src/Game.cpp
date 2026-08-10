@@ -8,6 +8,7 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
     textureBg("assets/background.jpg"),
     background(textureBg){
         textureBg.setSmooth(true);
+        window.setVerticalSyncEnabled(true);
         sf::Vector2u textureSize=textureBg.getSize();
         float scale=std::max(   //cover approach, riempiamo tutta la window senza deformare l'immagine
             utils::width/static_cast<float>(textureSize.x),

@@ -12,10 +12,10 @@ EndGameState::EndGameState(Game& g, bool go)
     fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
     title(fontTit),
     selectedIndex(0){
-        title.setCharacterSize(70);
+        title.setCharacterSize(80);
         std::vector<std::string> labels;
         if(gameover){
-            title.setString("Game Over!");
+            title.setString("Failed!");
             utils::centerOrigin(title);
             title.setPosition({utils::width/2.0f, 150.0f});
             labels={"Play again", "Exit"};
@@ -27,7 +27,7 @@ EndGameState::EndGameState(Game& g, bool go)
             }
         }
         else{
-            title.setString("You won!");
+            title.setString("Success!");
             utils::centerOrigin(title);
             title.setPosition({utils::width/2.0f, 150.0f});
             labels={"Next level", "Exit"};
