@@ -25,6 +25,7 @@ class PlayingState : public State{
     float rs;
     float speedTimer=0.0f;
     float changeInterval=1.5f;
+    float direction=1.0f;   //default direction "monoverso"
     std::mt19937 gen{std::random_device{}()}; 
     static constexpr float launchSpeed=600.0f;
     static constexpr float reloadSpeed=220.0f;

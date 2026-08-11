@@ -67,6 +67,11 @@ void PlayingState::update(float dt){
             speedTimer=0.0f;
             std::uniform_real_distribution<float> dis(data.rotationSpeed*data.minRS, data.rotationSpeed*data.maxRS);
             rs=dis(gen);
+            if(data.changeRD){   //implementazione del cambio casuale di verso rotazione
+                std::uniform_int_distribution<int> dirDis(0, 1);
+                direction=(dirDis(gen)==0)? -1.0 : 1.0;
+            }
+            rs=dis(gen)*direction;
         }
     }  
     roundRotation+=sf::degrees(dt*rs);
