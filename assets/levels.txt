@@ -1,0 +1,9 @@
+# pattern da seguire 
+# waitingDots attachedD offset rotationSpeed changeRS changeRD
+# ogni valore deve essere separato dal successivo con almeno uno Space
+# ogni riga è un setup per un livello, ogni riga vuota o #commentata verrà ignorata
+
+5 0 0 50.0 0 0
+13 0 0 100.0 0 0
+10 4 90.0 120.0 0 0
+10 6 60.0 120.0 0 0

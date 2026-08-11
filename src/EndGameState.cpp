@@ -5,13 +5,14 @@
 #include "PlayingState.hpp"
 #include "GraphicsUtils.hpp"
 
-EndGameState::EndGameState(Game& g, bool go)
+EndGameState::EndGameState(Game& g, bool go, unsigned lvl)
 :   game(g),
     gameover(go),
     fontTit("assets/DejavuSansMono-5m7L.ttf"),
     fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
     title(fontTit),
-    selectedIndex(0){
+    selectedIndex(0),
+    level(lvl){
         title.setCharacterSize(80);
         std::vector<std::string> labels;
         if(gameover){
@@ -58,10 +59,10 @@ void EndGameState::handleEvent(const sf::Event& event){
             if(selectedIndex==1) game.requestClose();
             else{
                 if(gameover){   //play again si richiama sullo stesso livello
-                    game.changeState(std::make_unique<PlayingState>(game));
+                    game.changeState(std::make_unique<PlayingState>(game, level));
                 }
                 else{   //si avanza di livello, level++
-                    game.changeState(std::make_unique<PlayingState>(game));
+                    game.changeState(std::make_unique<PlayingState>(game, ++level));
                 }
             }
         }

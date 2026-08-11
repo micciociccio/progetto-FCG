@@ -1,5 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "State.hpp"
+#include "LevelData.hpp" 
 
 class Game;
 
@@ -16,15 +17,16 @@ class PlayingState : public State{
     sf::CircleShape circle;
     std::vector<sf::CircleShape> waitingDots;
     std::optional<sf::CircleShape> flyingDot;
+    LevelData data;
+    unsigned level;
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);
-    unsigned level;
     static constexpr float launchSpeed=600.0f;
     static constexpr float reloadSpeed=220.0f;
-    static constexpr float rotationSpeed=120.0f;
+    // static constexpr float rotationSpeed=120.0f;
     static constexpr float orbitRadius=140.0f;   //abbiamo circle a posizione.y=250, la "barriera" a y=390 otteniamo 140
     public:
-        explicit PlayingState(Game& g);
+        explicit PlayingState(Game& g, unsigned lvl);
         ~PlayingState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;

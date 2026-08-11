@@ -5,23 +5,32 @@
 #include "EndGameState.hpp"
 #include "GraphicsUtils.hpp"
 
-PlayingState::PlayingState(Game& g)
+PlayingState::PlayingState(Game& g, unsigned lvl)
 :   game(g),
     circleTexture("assets/circle.png"),
     dotTexture("assets/dot.png"),
     circle(70.0f),
-    level(1){
+    data(g.getLvlSetup(lvl)),
+    level(lvl){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
         circle.setTexture(&circleTexture);
         dotTexture.setSmooth(true);
-        for(int i=0; i<15; i++){
+        for(int i=0; i<data.waitingD; i++){
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
             float startY=utils::height-350.0f;
             dot.setPosition({utils::width/2.0f, startY + static_cast<float>(i) * 48.0f});
             dot.setTexture(&dotTexture);
-            waitingDots.push_back(dot);   //dots da aggiungere al cerchio
+            waitingDots.push_back(dot);   //dots da aggiungere a circle
+        }
+        for(int i=0; i<data.attachedD; i++){   //dots già in rotazione su circle
+            sf::CircleShape dot(14.0f);
+            dot.setOrigin({dot.getRadius(), dot.getRadius()});
+            dot.setTexture(&dotTexture);
+            sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+            AttachedDot d={dot, data.offset*static_cast<float>(i), line};
+            attachedDots.push_back(d);
         }
 }
 
@@ -51,7 +60,7 @@ void PlayingState::update(float dt){
     //aggiornamento della coda di dots
     updateWaitingDots(dt);
     //rotazione ad ogni frame dei dots attacheds  
-    roundRotation+=sf::degrees(dt*rotationSpeed);
+    roundRotation+=sf::degrees(dt*data.rotationSpeed);
     sf::Vector2f center=circle.getPosition();
     for(AttachedDot& dot : attachedDots){
         sf::Angle totalAngle=roundRotation+dot.offset;
@@ -97,11 +106,11 @@ bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeStat
     sf::Angle absoluteAngle=sf::radians(std::atan2(toDot.y, toDot.x));
     AttachedDot newDot{*flyingDot, absoluteAngle-roundRotation};   //offset relativo, in modo che rimanga in quel punto della rotazione
     if(checkCollision(newDot)){   //caso 1: gameover il dot ha colpito gli altri in orbita
-        game.changeState(std::make_unique<EndGameState>(game, true));
+        game.changeState(std::make_unique<EndGameState>(game, true, level));
         return true; 
     }
     else if(waitingDots.empty()){   //caso 2: se non c'è collisione && abbiamo finito i dot da inserire abbiamo vinto
-        game.changeState(std::make_unique<EndGameState>(game, false)); //livello completato
+        game.changeState(std::make_unique<EndGameState>(game, false, level)); //livello completato
         return true;
     }
     //dot inserito correttamente, altri da lanciare

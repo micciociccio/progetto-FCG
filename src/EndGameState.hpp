@@ -12,7 +12,7 @@ class EndGameState : public State{
     std::vector<sf::Text> options;
     unsigned level, selectedIndex;
     public:
-        explicit EndGameState(Game& g, bool go);
+        explicit EndGameState(Game& g, bool go, unsigned lvl);
         ~EndGameState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;
