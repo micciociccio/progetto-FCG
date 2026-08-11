@@ -37,7 +37,7 @@ void MenuState::handleEvent(const sf::Event& event){
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
             if(selectedIndex==0){}
             else if(selectedIndex==1){
-                game.changeState(std::make_unique<PlayingState>(game, 1));
+                game.changeState(std::make_unique<PlayingState>(game, 5));
             }
             else game.requestClose(); 
         }

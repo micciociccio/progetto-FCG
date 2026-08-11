@@ -7,5 +7,7 @@ struct LevelData{   //con '=' assegnamo i valori di default per il fallback
     sf::Angle offset;
     float rotationSpeed=120.0f;
     bool changeRS=false;   //rotazione a velocità variabile
+    float minRS;
+    float maxRS;
     bool changeRD=false;   //cambio del verso di rotazione
 };

@@ -1,6 +1,7 @@
 #include "SFML/Graphics.hpp"
 #include "State.hpp"
 #include "LevelData.hpp" 
+#include <random>
 
 class Game;
 
@@ -21,6 +22,10 @@ class PlayingState : public State{
     unsigned level;
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);
+    float rs;
+    float speedTimer=0.0f;
+    float changeInterval=1.5f;
+    std::mt19937 gen{std::random_device{}()}; 
     static constexpr float launchSpeed=600.0f;
     static constexpr float reloadSpeed=220.0f;
     // static constexpr float rotationSpeed=120.0f;

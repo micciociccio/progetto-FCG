@@ -11,7 +11,8 @@ PlayingState::PlayingState(Game& g, unsigned lvl)
     dotTexture("assets/dot.png"),
     circle(70.0f),
     data(g.getLvlSetup(lvl)),
-    level(lvl){
+    level(lvl),
+    rs(data.rotationSpeed){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
         circle.setTexture(&circleTexture);
@@ -59,8 +60,16 @@ void PlayingState::update(float dt){
     }
     //aggiornamento della coda di dots
     updateWaitingDots(dt);
-    //rotazione ad ogni frame dei dots attacheds  
-    roundRotation+=sf::degrees(dt*data.rotationSpeed);
+    //rotazione ad ogni frame dei dots attacheds
+    if(data.changeRS){   //implementazione casuale del cambio di velocità
+        speedTimer+=dt;
+        if(speedTimer>=changeInterval){
+            speedTimer=0.0f;
+            std::uniform_real_distribution<float> dis(data.rotationSpeed*data.minRS, data.rotationSpeed*data.maxRS);
+            rs=dis(gen);
+        }
+    }  
+    roundRotation+=sf::degrees(dt*rs);
     sf::Vector2f center=circle.getPosition();
     for(AttachedDot& dot : attachedDots){
         sf::Angle totalAngle=roundRotation+dot.offset;

@@ -20,7 +20,7 @@ std::vector<LevelData> loadAllLvl(const std::string& path){
         if(line.empty() || line[0]=='#') continue;
         std::istringstream ss(line);
         LevelData lvl;
-        if(ss >> lvl.waitingD >> lvl.attachedD >> aux >> lvl.rotationSpeed >> lvl.changeRS >> lvl.changeRD){
+        if(ss >> lvl.waitingD >> lvl.attachedD >> aux >> lvl.rotationSpeed >> lvl.changeRS >> lvl.minRS >> lvl.maxRS >> lvl.changeRD){
             if(first){   //il file è stato aperto ed ha almeno un livello che segue il pattern corretto, non serve fallback al default -> lo togliamo
                 levels.pop_back();
                 first=false;
