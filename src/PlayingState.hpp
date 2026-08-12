@@ -2,6 +2,8 @@
 #include "State.hpp"
 #include "LevelData.hpp" 
 #include <random>
+#include <string>
+
 
 class Game;
 
@@ -19,7 +21,10 @@ class PlayingState : public State{
     std::vector<sf::CircleShape> waitingDots;
     std::optional<sf::CircleShape> flyingDot;
     LevelData data;
-    std::size_t level;
+    std::size_t level, attempts;
+    sf::Font font;
+    sf::Text textLvl;
+    sf::Text textAttempts;
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);
     float rs;
@@ -32,7 +37,7 @@ class PlayingState : public State{
     // static constexpr float rotationSpeed=120.0f;
     static constexpr float orbitRadius=140.0f;   //abbiamo circle a posizione.y=250, la "barriera" a y=390 otteniamo 140
     public:
-        explicit PlayingState(Game& g, unsigned lvl);
+        explicit PlayingState(Game& g, std::size_t lvl, std::size_t attempts);
         ~PlayingState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;
