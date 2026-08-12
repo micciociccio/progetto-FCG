@@ -42,6 +42,7 @@ void PlayingState::handleEvent(const sf::Event& event){
         if(keyPressed->code==sf::Keyboard::Key::Space && !flyingDot && !waitingDots.empty()){
             flyingDot=waitingDots.front();
             waitingDots.erase(waitingDots.begin());
+            game.playSound(SoundEffect::DotShot);
         }
     }
 }
@@ -120,10 +121,12 @@ bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeStat
     sf::Angle absoluteAngle=sf::radians(std::atan2(toDot.y, toDot.x));
     AttachedDot newDot{*flyingDot, absoluteAngle-roundRotation};   //offset relativo, in modo che rimanga in quel punto della rotazione
     if(checkCollision(newDot)){   //caso 1: gameover il dot ha colpito gli altri in orbita
+        game.playSound(SoundEffect::lvlFailed);
         game.changeState(std::make_unique<EndGameState>(game, true, level));
         return true; 
     }
     else if(waitingDots.empty()){   //caso 2: se non c'è collisione && abbiamo finito i dot da inserire abbiamo vinto
+        game.playSound(SoundEffect::lvlPassed);
         game.changeState(std::make_unique<EndGameState>(game, false, level)); //livello completato
         return true;
     }

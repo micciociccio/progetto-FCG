@@ -31,13 +31,13 @@ void MenuState::handleEvent(const sf::Event& event){
             utils::updateColors(options, selectedIndex);
         }
         else if(keyPressed->code==sf::Keyboard::Key::Down){
-            if(static_cast<std::size_t>(selectedIndex) < options.size()-1) selectedIndex++;
+            if(selectedIndex < options.size()-1) selectedIndex++;
             utils::updateColors(options, selectedIndex);
         }
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
             if(selectedIndex==0){}
             else if(selectedIndex==1){
-                game.changeState(std::make_unique<PlayingState>(game, 8));
+                game.changeState(std::make_unique<PlayingState>(game, 1));
             }
             else game.requestClose(); 
         }

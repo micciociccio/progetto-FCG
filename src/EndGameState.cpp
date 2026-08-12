@@ -28,7 +28,7 @@ EndGameState::EndGameState(Game& g, bool go, unsigned lvl)
             }
         }
         else{
-            title.setString("Success!");
+            title.setString("Passed!");
             utils::centerOrigin(title);
             title.setPosition({utils::width/2.0f, 150.0f});
             labels={"Next level", "Exit"};

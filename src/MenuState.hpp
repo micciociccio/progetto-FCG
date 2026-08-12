@@ -9,7 +9,7 @@ class MenuState : public State{
     sf::Font fontTit, fontOpt;
     sf::Text title;
     std::vector<sf::Text> options;
-    unsigned selectedIndex=0;
+    std::size_t selectedIndex=0;
     public:
         explicit MenuState(Game& g);
         ~MenuState();

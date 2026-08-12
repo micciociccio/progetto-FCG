@@ -17,6 +17,16 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
             utils::height/static_cast<float>(textureSize.y)
         );
         background.setScale({scale, scale});
+        std::vector<std::string> files={"assets/dotShot.wav", "assets/lvlPassed.mp3", "assets/lvlFailed.wav"};
+        //doppio loop obbligatorio perchè in caso di resize il vector modifica i propri indirizzi che poi saranno inaccessibili da sounds[]
+        for(std::size_t i=0; i<files.size(); i++){
+            sf::SoundBuffer sb(files[i]);
+            soundsBuffer.push_back(sb);
+        }
+        for(std::size_t i=0; i<files.size(); i++){
+            sf::Sound sound(soundsBuffer[i]);
+            sounds.push_back(sound);
+        }
 		currentState=std::make_unique<MenuState>(*this);
 }
 
@@ -45,7 +55,11 @@ void Game::requestClose(){
 	window.close();
 }
 
-LevelData Game::getLvlSetup(unsigned lvl){
-    unsigned index=std::min(lvl-1, static_cast<unsigned>(levelContainers.size()-1));
+LevelData Game::getLvlSetup(std::size_t lvl){
+    unsigned index=std::min(lvl-1, levelContainers.size()-1);
     return levelContainers[index];
+}
+
+void Game::playSound(SoundEffect index){
+    sounds[static_cast<std::size_t>(index)].play();
 }
