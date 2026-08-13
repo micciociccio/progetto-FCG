@@ -1,4 +1,4 @@
 # file per la persistenza dei livelli rispetto all'utente in locale
 # si scrive su una riga un solo intero indicante il livello da caricare
 
-10
+1

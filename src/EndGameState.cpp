@@ -14,10 +14,12 @@ EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t fails)
     level(lvl),
     selectedIndex(0),
     failures(fails),
-    textAttempts(fontTit, "with "+std::to_string(failures+1)+" attempts", 30),
+    textAttempts(fontTit, "", 30),
     textLevel(fontTit, "level "+std::to_string(level), 33){
         title.setCharacterSize(80);
         std::vector<std::string> labels;
+        std::string s=(failures==0) ? "with "+std::to_string(failures+1) + " attempt" : "with "+std::to_string(failures+1) + " attempts";
+        textAttempts.setString(s);
         utils::centerOrigin(textAttempts); utils::centerOrigin(textLevel);
         if(gameover){
             title.setString("Failed!");
@@ -71,8 +73,8 @@ void EndGameState::handleEvent(const sf::Event& event){
                 }
             }
             else if(selectedIndex==1){
-                if(gameover) game.requestClose(--level);   //dato che il livello da caricare è il succesivo, in caso avessimo perso, rimaniamo a level con --
-                else game.requestClose(level);
+                if(gameover) game.requestClose(level);   //abbiamo perso quindi rimaniamo a level
+                else game.requestClose(++level);
             }
         }
     }

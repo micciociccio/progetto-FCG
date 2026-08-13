@@ -59,7 +59,7 @@ void Game::requestClose(std::size_t level){
 }
 
 LevelData Game::getLvlSetup(std::size_t lvl){
-    unsigned index=std::min(lvl-1, utils::lastLvl-1);
+    std::size_t index=std::min(lvl-1, utils::lastLvl-1);
     return levelContainers[index];
 }
 

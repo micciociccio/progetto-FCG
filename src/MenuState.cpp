@@ -40,7 +40,7 @@ void MenuState::handleEvent(const sf::Event& event){
             else if(selectedIndex==1){
                 game.changeState(std::make_unique<PlayingState>(game, resumeLevel, 0));
             }
-            else game.requestClose(--resumeLevel);   //dato che il livello da caricare è il succesivo, in caso fossimo rimasti nel Menu non dobbiamo aumentarlo
+            else game.requestClose(resumeLevel);   //non abbiamo giocato quindi il livello rimane lo stesso estratto dal file
         }
     }   
 }

@@ -34,23 +34,23 @@ std::vector<LevelData> loadAllLvl(const std::string& path){
 }
 
 std::size_t resumeLevel(const std::string& path){
-    std::size_t level;
+    std::size_t level=1, tempLvl;   //default starting level
     std::ifstream file(path);
     if(!file.is_open()){
         std::cerr<<"LevelLoader: impossibile trovare l'ultimo livello dell'utente"<<"\n";
-        return 1;   //default starting level
     }
-    std::string line;
-    while(std::getline(file, line)){
-        if(line.empty() || line[0]=='#') continue;
-        std::istringstream ss(line);
-        if(ss >> level && level>0 && level<=utils::lastLvl) return level;   //se c'è "spazzatura" oltre: commenti, linee vuote, spazi inline -> returniamo direttamente il livello iniziale 
-        else return 1;
+    else{
+        std::string line;   //il file può esistere, ma per qualche ragione essere vuoto, dobbiamo controllare
+        while(std::getline(file, line)){
+            if(line.empty() || line[0]=='#') continue;
+            std::istringstream ss(line);
+            if(ss >> tempLvl && tempLvl>0 && tempLvl<=utils::lastLvl) level=tempLvl;   //se c'è "spazzatura" oltre: commenti, linee vuote, spazi inline -> fallback al lvl di default 
+        }
     }
+    return level;
 }
 
 void writeLevel(const std::string& path, std::size_t level){
-    level++;
     if(level>utils::lastLvl) level=10;
     std::ofstream file(path);
     if(file.is_open()){   //se c'è stato un problema con i file .txt verrà semplicemente eseguito ogni volta il livello di default
