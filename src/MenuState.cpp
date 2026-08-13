@@ -2,14 +2,15 @@
 #include "State.hpp"
 #include "Game.hpp"
 #include "PlayingState.hpp"
-#include "GraphicsUtils.hpp"
+#include "GameUtils.hpp"
 
-MenuState::MenuState(Game& g)
+MenuState::MenuState(Game& g, std::size_t resumeLvl)
 :   game(g),
     fontTit("assets/DejavuSansMono-5m7L.ttf"),
     fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
     title(fontTit, "aa", 130),
-    selectedIndex(0){
+    selectedIndex(0),
+    resumeLevel(resumeLvl){
         utils::centerOrigin(title);
         title.setPosition({utils::width/2.0f, 150.0f});
         std::vector<std::string> labels={"Levels", "Play", "Exit"};
@@ -37,9 +38,9 @@ void MenuState::handleEvent(const sf::Event& event){
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
             if(selectedIndex==0){}
             else if(selectedIndex==1){
-                game.changeState(std::make_unique<PlayingState>(game, 1, 0));
+                game.changeState(std::make_unique<PlayingState>(game, resumeLevel, 0));
             }
-            else game.requestClose(); 
+            else game.requestClose(--resumeLevel);   //dato che il livello da caricare è il succesivo, in caso fossimo rimasti nel Menu non dobbiamo aumentarlo
         }
     }   
 }

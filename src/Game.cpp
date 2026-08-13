@@ -1,14 +1,15 @@
 #include "Game.hpp"
 #include "State.hpp"
 #include "MenuState.hpp"
-#include "GraphicsUtils.hpp"
+#include "GameUtils.hpp"
 #include "LevelLoader.hpp"
 
 Game::Game(unsigned width, unsigned height, const std::string& title)
 :   window(sf::VideoMode({width, height}), title, sf::Style::Titlebar),
     textureBg("assets/background.jpg"),
     background(textureBg),
-    levelContainers(loadAllLvl("assets/levels.txt")){
+    levelContainers(loadAllLvl("assets/levels.txt")),
+    userLvl(resumeLevel("assets/lvl.txt")){
         textureBg.setSmooth(true);
         window.setVerticalSyncEnabled(true);
         sf::Vector2u textureSize=textureBg.getSize();
@@ -27,7 +28,8 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
             sf::Sound sound(soundsBuffer[i]);
             sounds.push_back(sound);
         }
-		currentState=std::make_unique<MenuState>(*this);
+
+		currentState=std::make_unique<MenuState>(*this, userLvl);
 }
 
 Game::~Game()=default;
@@ -51,12 +53,13 @@ void Game::run(){
     }
 }
 
-void Game::requestClose(){
+void Game::requestClose(std::size_t level){
+    writeLevel("assets/lvl.txt", level);
 	window.close();
 }
 
 LevelData Game::getLvlSetup(std::size_t lvl){
-    unsigned index=std::min(lvl-1, levelContainers.size()-1);
+    unsigned index=std::min(lvl-1, utils::lastLvl-1);
     return levelContainers[index];
 }
 

@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
 #include "PlayingState.hpp"
-#include "GraphicsUtils.hpp"
+#include "GameUtils.hpp"
 
 EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t fails)
 :   game(g),
@@ -62,14 +62,17 @@ void EndGameState::handleEvent(const sf::Event& event){
             utils::updateColors(options, selectedIndex);
         }
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
-            if(selectedIndex==1) game.requestClose();
-            else{
+            if(selectedIndex==0){
                 if(gameover){   //play again si richiama sullo stesso livello
                     game.changeState(std::make_unique<PlayingState>(game, level, ++failures));
                 }
-                else{   //si avanza di livello, level++
+                else{   //si avanza di livello, ++level e azzeriamo i fallimenti
                     game.changeState(std::make_unique<PlayingState>(game, ++level, 0));
                 }
+            }
+            else if(selectedIndex==1){
+                if(gameover) game.requestClose(--level);   //dato che il livello da caricare è il succesivo, in caso avessimo perso, rimaniamo a level con --
+                else game.requestClose(level);
             }
         }
     }

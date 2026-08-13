@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
 #include "EndGameState.hpp"
-#include "GraphicsUtils.hpp"
+#include "GameUtils.hpp"
 
 PlayingState::PlayingState(Game& g, std::size_t lvl, std::size_t fails)
 :   game(g),

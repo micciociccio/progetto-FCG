@@ -21,12 +21,13 @@ class Game{
     std::vector<LevelData> levelContainers;
     std::vector<sf::SoundBuffer> soundsBuffer;
     std::vector<sf::Sound> sounds;
+    std::size_t userLvl;
     public:
         Game(unsigned width, unsigned height, const std::string& title);
         ~Game();
         void changeState(std::unique_ptr<State> newState);
         void run();
-        void requestClose();
+        void requestClose(std::size_t level);
         LevelData getLvlSetup(std::size_t lvl);
         void playSound(SoundEffect index);
 };

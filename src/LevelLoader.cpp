@@ -1,4 +1,5 @@
 #include "LevelLoader.hpp"
+#include "GameUtils.hpp"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -30,4 +31,31 @@ std::vector<LevelData> loadAllLvl(const std::string& path){
         }
     }
     return levels;
+}
+
+std::size_t resumeLevel(const std::string& path){
+    std::size_t level;
+    std::ifstream file(path);
+    if(!file.is_open()){
+        std::cerr<<"LevelLoader: impossibile trovare l'ultimo livello dell'utente"<<"\n";
+        return 1;   //default starting level
+    }
+    std::string line;
+    while(std::getline(file, line)){
+        if(line.empty() || line[0]=='#') continue;
+        std::istringstream ss(line);
+        if(ss >> level && level>0 && level<=utils::lastLvl) return level;   //se c'è "spazzatura" oltre: commenti, linee vuote, spazi inline -> returniamo direttamente il livello iniziale 
+        else return 1;
+    }
+}
+
+void writeLevel(const std::string& path, std::size_t level){
+    level++;
+    if(level>utils::lastLvl) level=10;
+    std::ofstream file(path);
+    if(file.is_open()){   //se c'è stato un problema con i file .txt verrà semplicemente eseguito ogni volta il livello di default
+        file << "# file per la persistenza dei livelli rispetto all'utente in locale\n"
+            << "# si scrive su una riga un solo intero indicante il livello da caricare\n\n"
+            << level;
+    }
 }
