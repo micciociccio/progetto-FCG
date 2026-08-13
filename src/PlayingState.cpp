@@ -5,16 +5,16 @@
 #include "EndGameState.hpp"
 #include "GraphicsUtils.hpp"
 
-PlayingState::PlayingState(Game& g, std::size_t lvl, std::size_t attempts)
+PlayingState::PlayingState(Game& g, std::size_t lvl, std::size_t fails)
 :   game(g),
     circleTexture("assets/circle.png"),
     dotTexture("assets/dot.png"),
     circle(70.0f),
     data(g.getLvlSetup(lvl)),
     level(lvl), 
-    attempts(attempts),
+    failures(fails),
     font("assets/JetBrainsMonoNL-LightItalic.ttf"),
-    textLvl(font, std::to_string(level), 80), textAttempts(font, "Attempts\n"+std::to_string(attempts), 24),
+    textLvl(font, std::to_string(level), 80), textAttempts(font, "failures\n"+std::to_string(failures), 24),
     rs(data.rotationSpeed){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
@@ -131,12 +131,12 @@ bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeStat
     AttachedDot newDot{*flyingDot, absoluteAngle-roundRotation};   //offset relativo, in modo che rimanga in quel punto della rotazione
     if(checkCollision(newDot)){   //caso 1: gameover il dot ha colpito gli altri in orbita
         game.playSound(SoundEffect::lvlFailed);
-        game.changeState(std::make_unique<EndGameState>(game, true, level, attempts));
+        game.changeState(std::make_unique<EndGameState>(game, true, level, failures));
         return true; 
     }
     else if(waitingDots.empty()){   //caso 2: se non c'è collisione && abbiamo finito i dot da inserire abbiamo vinto
         game.playSound(SoundEffect::lvlPassed);
-        game.changeState(std::make_unique<EndGameState>(game, false, level, attempts)); //livello completato
+        game.changeState(std::make_unique<EndGameState>(game, false, level, failures)); //livello completato
         return true;
     }
     //dot inserito correttamente, altri da lanciare

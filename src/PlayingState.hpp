@@ -4,7 +4,6 @@
 #include <random>
 #include <string>
 
-
 class Game;
 
 struct AttachedDot{
@@ -21,7 +20,7 @@ class PlayingState : public State{
     std::vector<sf::CircleShape> waitingDots;
     std::optional<sf::CircleShape> flyingDot;
     LevelData data;
-    std::size_t level, attempts;
+    std::size_t level, failures;
     sf::Font font;
     sf::Text textLvl;
     sf::Text textAttempts;
@@ -37,7 +36,7 @@ class PlayingState : public State{
     // static constexpr float rotationSpeed=120.0f;
     static constexpr float orbitRadius=140.0f;   //abbiamo circle a posizione.y=250, la "barriera" a y=390 otteniamo 140
     public:
-        explicit PlayingState(Game& g, std::size_t lvl, std::size_t attempts);
+        explicit PlayingState(Game& g, std::size_t lvl, std::size_t fails);
         ~PlayingState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;

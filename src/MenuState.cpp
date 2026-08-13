@@ -16,7 +16,7 @@ MenuState::MenuState(Game& g)
         for(std::size_t i=0; i<labels.size(); i++){
             sf::Text option(fontOpt, labels[i], 24);
             utils::centerOrigin(option);
-            option.setPosition({utils::width/2.0f, 400.0f + static_cast<float>(i) * 80.0f});
+            option.setPosition({utils::width/2.0f, 430.0f + static_cast<float>(i) * 80.0f});
             options.push_back(option);
         }
         utils::updateColors(options, selectedIndex);

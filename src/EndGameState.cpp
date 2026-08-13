@@ -5,7 +5,7 @@
 #include "PlayingState.hpp"
 #include "GraphicsUtils.hpp"
 
-EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t attempts)
+EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t fails)
 :   game(g),
     gameover(go),
     fontTit("assets/DejavuSansMono-5m7L.ttf"),
@@ -13,18 +13,22 @@ EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t attemp
     title(fontTit),
     level(lvl),
     selectedIndex(0),
-    attempts(attempts){
+    failures(fails),
+    textAttempts(fontTit, "with "+std::to_string(failures+1)+" attempts", 30),
+    textLevel(fontTit, "level "+std::to_string(level), 33){
         title.setCharacterSize(80);
         std::vector<std::string> labels;
+        utils::centerOrigin(textAttempts); utils::centerOrigin(textLevel);
         if(gameover){
             title.setString("Failed!");
             utils::centerOrigin(title);
             title.setPosition({utils::width/2.0f, 150.0f});
+            textLevel.setPosition({title.getPosition().x, title.getPosition().y+100.0f});
             labels={"Play again", "Exit"};
             for(std::size_t i=0; i<labels.size(); i++){
                 sf::Text option(fontOpt, labels[i], 24);
                 utils::centerOrigin(option);
-                option.setPosition({utils::width/2.0f, 430.0f + static_cast<float>(i) * 80.0f});
+                option.setPosition({utils::width/2.0f, 490.0f + static_cast<float>(i) * 80.0f});
                 options.push_back(option);
             }
         }
@@ -32,11 +36,12 @@ EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t attemp
             title.setString("Passed!");
             utils::centerOrigin(title);
             title.setPosition({utils::width/2.0f, 150.0f});
+            textAttempts.setPosition({title.getPosition().x, title.getPosition().y+100.0f});
             labels={"Next level", "Exit"};
             for(std::size_t i=0; i<labels.size(); i++){
                 sf::Text option(fontOpt, labels[i], 24);
                 utils::centerOrigin(option);
-                option.setPosition({utils::width/2.0f, 430.0f + static_cast<float>(i) * 80.0f});
+                option.setPosition({utils::width/2.0f, 490.0f + static_cast<float>(i) * 80.0f});
                 options.push_back(option);
             }
         }
@@ -60,7 +65,7 @@ void EndGameState::handleEvent(const sf::Event& event){
             if(selectedIndex==1) game.requestClose();
             else{
                 if(gameover){   //play again si richiama sullo stesso livello
-                    game.changeState(std::make_unique<PlayingState>(game, level, ++attempts));
+                    game.changeState(std::make_unique<PlayingState>(game, level, ++failures));
                 }
                 else{   //si avanza di livello, level++
                     game.changeState(std::make_unique<PlayingState>(game, ++level, 0));
@@ -78,6 +83,10 @@ void EndGameState::render(sf::RenderWindow& window){
     window.draw(title);
     for(sf::Text& option : options){
         window.draw(option);
+    }
+    if(gameover) window.draw(textLevel); 
+    else{
+        window.draw(textAttempts);
     }
 }
 
