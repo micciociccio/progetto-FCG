@@ -3,6 +3,7 @@
 #include "Game.hpp"
 #include "PlayingState.hpp"
 #include "GameUtils.hpp"
+#include "LevelsState.hpp"
 
 MenuState::MenuState(Game& g, std::size_t resumeLvl)
 :   game(g),
@@ -36,8 +37,10 @@ void MenuState::handleEvent(const sf::Event& event){
             utils::updateColors(options, selectedIndex);
         }
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
-            if(selectedIndex==0){}
-            else if(selectedIndex==1){
+            if(selectedIndex==0){   //levels premuto
+                game.changeState(std::make_unique<LevelsState>(game, resumeLevel));
+            }
+            else if(selectedIndex==1){   //play premuto
                 game.changeState(std::make_unique<PlayingState>(game, resumeLevel, 0));
             }
             else game.requestClose(resumeLevel);   //non abbiamo giocato quindi il livello rimane lo stesso estratto dal file

@@ -20,6 +20,7 @@ add_executable(
     src/PlayingState.cpp
     src/EndGameState.cpp
     src/LevelLoader.cpp
+    src/LevelsState.cpp
 )
 target_compile_features(aa_game PRIVATE cxx_std_17)
 target_link_libraries(aa_game PRIVATE SFML::Graphics SFML::Audio)

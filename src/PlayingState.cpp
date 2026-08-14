@@ -5,7 +5,7 @@
 #include "EndGameState.hpp"
 #include "GameUtils.hpp"
 
-PlayingState::PlayingState(Game& g, std::size_t lvl, std::size_t fails)
+PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
 :   game(g),
     circleTexture("assets/circle.png"),
     dotTexture("assets/dot.png"),
