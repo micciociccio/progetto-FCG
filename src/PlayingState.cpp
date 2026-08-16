@@ -7,31 +7,27 @@
 
 PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
 :   game(g),
-    circleTexture("assets/circle.png"),
-    dotTexture("assets/dot.png"),
     circle(70.0f),
     data(g.getLvlSetup(lvl)),
     level(lvl),
     failures(fails),
-    font("assets/JetBrainsMonoNL-LightItalic.ttf"),
-    textLvl(font, "", 80), textAttempts(font, "failures\n"+std::to_string(failures), 24),
+    textLvl(game.getGenFont(), "", 80), textAttempts(game.getGenFont(), "failures\n"+std::to_string(failures), 24),
     rs(data.rotationSpeed){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
-        circle.setTexture(&circleTexture);
-        dotTexture.setSmooth(true);
+        circle.setTexture(&game.getTexture(Textures::Circle));
         for(int i=0; i<data.waitingD; i++){
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
             float startY=utils::height-350.0f;
             dot.setPosition({utils::width/2.0f, startY + static_cast<float>(i) * 48.0f});
-            dot.setTexture(&dotTexture);
+            dot.setTexture(&game.getTexture(Textures::Dot));
             waitingDots.push_back(dot);   //dots da aggiungere a circle
         }
         for(int i=0; i<data.attachedD; i++){   //dots già in rotazione su circle
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
-            dot.setTexture(&dotTexture);
+            dot.setTexture(&game.getTexture(Textures::Dot));
             sf::VertexArray line(sf::PrimitiveType::Lines, 2);
             AttachedDot d={dot, data.offset*static_cast<float>(i), line};
             attachedDots.push_back(d);

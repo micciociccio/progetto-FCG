@@ -9,14 +9,12 @@
 EndGameState::EndGameState(Game& g, bool go, unsigned lvl, unsigned fails)
 :   game(g),
     gameover(go),
-    fontTit("assets/DejavuSansMono-5m7L.ttf"),
-    fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
-    title(fontTit),
     level(lvl),
     selectedIndex(0),
     failures(fails),
-    textAttempts(fontTit, "", 30),
-    textLevel(fontTit, "level "+std::to_string(level), 33){
+    title(game.getTitleFont()),
+    textAttempts(game.getTitleFont(), "", 30),
+    textLevel(game.getTitleFont(), "level "+std::to_string(level), 33){
         title.setCharacterSize(80);
         std::vector<std::string> labels;
         std::string s=(failures==0) ? "with "+std::to_string(failures+1) + " attempt" : "with "+std::to_string(failures+1) + " attempts";
@@ -29,7 +27,7 @@ EndGameState::EndGameState(Game& g, bool go, unsigned lvl, unsigned fails)
             textLevel.setPosition({title.getPosition().x, title.getPosition().y+100.0f});
             labels={"Play again", "Exit"};
             for(std::size_t i=0; i<labels.size(); i++){
-                sf::Text option(fontOpt, labels[i], 24);
+                sf::Text option(game.getGenFont(), labels[i], 24);
                 utils::centerOrigin(option);
                 option.setPosition({utils::width/2.0f, 490.0f + static_cast<float>(i) * 80.0f});
                 options.push_back(option);
@@ -46,7 +44,7 @@ EndGameState::EndGameState(Game& g, bool go, unsigned lvl, unsigned fails)
             textAttempts.setPosition({title.getPosition().x, title.getPosition().y+100.0f});
             labels={"Next level", "Exit"};
             for(std::size_t i=0; i<labels.size(); i++){
-                sf::Text option(fontOpt, labels[i], 24);
+                sf::Text option(game.getGenFont(), labels[i], 24);
                 utils::centerOrigin(option);
                 option.setPosition({utils::width/2.0f, 490.0f + static_cast<float>(i) * 80.0f});
                 options.push_back(option);

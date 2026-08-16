@@ -9,7 +9,6 @@ class Game;
 class LevelsState : public State{
     Game& game;
     unsigned userLevel;
-    sf::Font font;
     sf::Text descMsg, lvlBox, warnMsg;
     sf::RectangleShape rect;
     std::string input;

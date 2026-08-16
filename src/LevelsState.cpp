@@ -7,10 +7,9 @@
 LevelsState::LevelsState(Game& g)
 :   game(g),
     userLevel(game.getUserLvl()),
-    font("assets/JetBrainsMonoNL-LightItalic.ttf"),
-    descMsg(font, "Inserisci un livello da giocare", 22),
-    lvlBox(font, "", 30),
-    warnMsg(font, "Livello massimo da poter scegliere: "+std::to_string(userLevel), 20),
+    descMsg(game.getGenFont(), "Inserisci un livello da giocare", 22),
+    lvlBox(game.getGenFont(), "", 30),
+    warnMsg(game.getGenFont(), "Livello massimo da poter scegliere: "+std::to_string(userLevel), 20),
     rect({140.0f, 70.0f})
     {
         utils::centerOrigin(descMsg); utils::centerOrigin(lvlBox); utils::centerOrigin(warnMsg);

@@ -6,7 +6,6 @@ class Game;   //forward declaration
 
 class MenuState : public State{
     Game& game;
-    sf::Font fontTit, fontOpt;
     sf::Text title;
     std::vector<sf::Text> options;
     unsigned selectedIndex=0, userLevel;

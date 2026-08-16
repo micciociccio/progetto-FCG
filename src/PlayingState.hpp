@@ -14,14 +14,11 @@ struct AttachedDot{
 
 class PlayingState : public State{
     Game& game;
-    sf::Texture circleTexture;
-    sf::Texture dotTexture;
     sf::CircleShape circle;
     std::vector<sf::CircleShape> waitingDots;
     std::optional<sf::CircleShape> flyingDot;
     LevelData data;
     unsigned level, failures;
-    sf::Font font;
     sf::Text textLvl, textAttempts;
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);

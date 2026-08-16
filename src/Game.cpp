@@ -8,9 +8,13 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
 :   window(sf::VideoMode({width, height}), title, sf::Style::Titlebar),
     textureBg("assets/background.jpg"),
     background(textureBg),
+    dotTexture("assets/dot.png"),
+    circleTexture("assets/circle.png"),
     levelContainers(loadAllLvl("assets/levels.txt")),
-    userLvl(resumeLevel("assets/lvl.txt")){
-        textureBg.setSmooth(true);
+    userLvl(resumeLevel("assets/lvl.txt")),
+    genFont("assets/JetBrainsMonoNL-LightItalic.ttf"),   //generic font
+    titleFont("assets/DejavuSansMono-5m7L.ttf"){   //title font
+        textureBg.setSmooth(true); dotTexture.setSmooth(true); circleTexture.setSmooth(true);
         window.setVerticalSyncEnabled(true);
         sf::Vector2u textureSize=textureBg.getSize();
         float scale=std::max(   //cover approach, riempiamo tutta la window senza deformare l'immagine
@@ -73,4 +77,21 @@ unsigned Game::getUserLvl(){
 void Game::updateUserLvl(unsigned newLvl){
     writeLevel("assets/lvl.txt", newLvl);
     userLvl=newLvl;
+}
+
+const sf::Texture& Game::getTexture(Textures t){
+    if(t==Textures::Dot) return dotTexture;
+    else if(t==Textures::Circle) return circleTexture;
+    else{
+        std::cerr<<"Game: texture t non caricata/trovata, usata la prima sf::Texture"<<"\n";
+        return dotTexture;
+    }
+}
+
+const sf::Font& Game::getGenFont(){
+    return genFont;
+}
+
+const sf::Font& Game::getTitleFont(){
+    return titleFont;
 }

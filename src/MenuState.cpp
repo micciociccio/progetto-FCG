@@ -7,16 +7,14 @@
 
 MenuState::MenuState(Game& g)
 :   game(g),
-    fontTit("assets/DejavuSansMono-5m7L.ttf"),
-    fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
-    title(fontTit, "aa", 130),
+    title(game.getTitleFont(), "aa", 130),
     selectedIndex(0),
     userLevel(game.getUserLvl()){
         utils::centerOrigin(title);
         title.setPosition({utils::width/2.0f, 150.0f});
         std::vector<std::string> labels={"Levels", "Play", "Exit"};
         for(std::size_t i=0; i<labels.size(); i++){
-            sf::Text option(fontOpt, labels[i], 24);
+            sf::Text option(game.getGenFont(), labels[i], 24);
             utils::centerOrigin(option);
             option.setPosition({utils::width/2.0f, 430.0f + static_cast<float>(i) * 80.0f});
             options.push_back(option);
