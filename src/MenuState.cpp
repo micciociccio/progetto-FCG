@@ -5,13 +5,13 @@
 #include "GameUtils.hpp"
 #include "LevelsState.hpp"
 
-MenuState::MenuState(Game& g, std::size_t resumeLvl)
+MenuState::MenuState(Game& g)
 :   game(g),
     fontTit("assets/DejavuSansMono-5m7L.ttf"),
     fontOpt("assets/JetBrainsMonoNL-LightItalic.ttf"),
     title(fontTit, "aa", 130),
     selectedIndex(0),
-    resumeLevel(resumeLvl){
+    userLevel(game.getUserLvl()){
         utils::centerOrigin(title);
         title.setPosition({utils::width/2.0f, 150.0f});
         std::vector<std::string> labels={"Levels", "Play", "Exit"};
@@ -38,12 +38,14 @@ void MenuState::handleEvent(const sf::Event& event){
         }
         else if(keyPressed->code==sf::Keyboard::Key::Enter){
             if(selectedIndex==0){   //levels premuto
-                game.changeState(std::make_unique<LevelsState>(game, resumeLevel));
+                game.changeState(std::make_unique<LevelsState>(game));
             }
-            else if(selectedIndex==1){   //play premuto
-                game.changeState(std::make_unique<PlayingState>(game, resumeLevel, 0));
+            else if(selectedIndex==1){   //play premuto, user continua dall'ultimo livello
+                game.changeState(std::make_unique<PlayingState>(game, userLevel, 0));
             }
-            else game.requestClose(resumeLevel);   //non abbiamo giocato quindi il livello rimane lo stesso estratto dal file
+            else{   //exit premuto, ci occupiamo solo di chiudere la window
+                game.requestClose();
+            }                
         }
     }   
 }

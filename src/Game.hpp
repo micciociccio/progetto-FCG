@@ -22,13 +22,16 @@ class Game{
     std::vector<sf::SoundBuffer> soundsBuffer;
     std::vector<sf::Sound> sounds;
     std::size_t userLvl;
+    //font caricati una sola volta dal file a cui fanno riferimento tutti gli :State 
     public:
         Game(unsigned width, unsigned height, const std::string& title);
         ~Game();
         void changeState(std::unique_ptr<State> newState);
         void run();
-        void requestClose(std::size_t level);
+        void requestClose();
         LevelData getLvlSetup(std::size_t lvl);
         void playSound(SoundEffect index);
+        unsigned getUserLvl();
+        void updateUserLvl(unsigned newLvl);
 };
 

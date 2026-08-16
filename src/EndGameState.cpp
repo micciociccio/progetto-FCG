@@ -4,8 +4,9 @@
 #include "MenuState.hpp"
 #include "PlayingState.hpp"
 #include "GameUtils.hpp"
+#include "LevelLoader.hpp"
 
-EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t fails)
+EndGameState::EndGameState(Game& g, bool go, unsigned lvl, unsigned fails)
 :   game(g),
     gameover(go),
     fontTit("assets/DejavuSansMono-5m7L.ttf"),
@@ -35,6 +36,10 @@ EndGameState::EndGameState(Game& g, bool go, std::size_t lvl, std::size_t fails)
             }
         }
         else{
+            //controllo per update userLvl
+            if(level>=game.getUserLvl()){
+                game.updateUserLvl(level+1);
+            }
             title.setString("Passed!");
             utils::centerOrigin(title);
             title.setPosition({utils::width/2.0f, 150.0f});
@@ -73,9 +78,11 @@ void EndGameState::handleEvent(const sf::Event& event){
                 }
             }
             else if(selectedIndex==1){
-                if(gameover) game.requestClose(level);   //abbiamo perso quindi rimaniamo a level
-                else game.requestClose(++level);
+                game.requestClose();
             }
+        }
+        else if(keyPressed->code==sf::Keyboard::Key::Escape){
+            game.changeState(std::make_unique<MenuState>(game)); 
         }
     }
 }

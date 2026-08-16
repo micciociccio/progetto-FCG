@@ -20,10 +20,9 @@ class PlayingState : public State{
     std::vector<sf::CircleShape> waitingDots;
     std::optional<sf::CircleShape> flyingDot;
     LevelData data;
-    std::size_t level, failures;
+    unsigned level, failures;
     sf::Font font;
-    sf::Text textLvl;
-    sf::Text textAttempts;
+    sf::Text textLvl, textAttempts;
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);
     float rs;

@@ -28,8 +28,8 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
             sf::Sound sound(soundsBuffer[i]);
             sounds.push_back(sound);
         }
-
-		currentState=std::make_unique<MenuState>(*this, userLvl);
+        //mostriamo il primo State del Menù
+		currentState=std::make_unique<MenuState>(*this);
 }
 
 Game::~Game()=default;
@@ -53,8 +53,7 @@ void Game::run(){
     }
 }
 
-void Game::requestClose(std::size_t level){
-    writeLevel("assets/lvl.txt", level);
+void Game::requestClose(){
 	window.close();
 }
 
@@ -65,4 +64,13 @@ LevelData Game::getLvlSetup(std::size_t lvl){
 
 void Game::playSound(SoundEffect index){
     sounds[static_cast<std::size_t>(index)].play();
+}
+
+unsigned Game::getUserLvl(){
+    return userLvl;
+}
+
+void Game::updateUserLvl(unsigned newLvl){
+    writeLevel("assets/lvl.txt", newLvl);
+    userLvl=newLvl;
 }

@@ -8,13 +8,13 @@ class Game;
 
 class LevelsState : public State{
     Game& game;
-    unsigned capLvl;
+    unsigned userLevel;
     sf::Font font;
-    sf::Text desc, lvlBox;
+    sf::Text descMsg, lvlBox, warnMsg;
     sf::RectangleShape rect;
     std::string input;
     public:
-        explicit LevelsState(Game& g, unsigned capLevel);
+        explicit LevelsState(Game& g);
         ~LevelsState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;

@@ -9,11 +9,11 @@ class EndGameState : public State{
     Game& game;
     bool gameover;
     sf::Font fontTit, fontOpt;
-    std::size_t level, selectedIndex, failures;
+    unsigned level, selectedIndex, failures;
     sf::Text title, textAttempts, textLevel;
     std::vector<sf::Text> options;
     public:
-        explicit EndGameState(Game& g, bool go, std::size_t lvl, std::size_t fails);
+        explicit EndGameState(Game& g, bool go, unsigned lvl, unsigned fails);
         ~EndGameState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;

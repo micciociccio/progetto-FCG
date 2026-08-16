@@ -9,9 +9,9 @@ class MenuState : public State{
     sf::Font fontTit, fontOpt;
     sf::Text title;
     std::vector<sf::Text> options;
-    std::size_t selectedIndex=0, resumeLevel;
+    unsigned selectedIndex=0, userLevel;
     public:
-        explicit MenuState(Game& g, std::size_t resumeLvl);
+        explicit MenuState(Game& g);
         ~MenuState();
         void handleEvent(const sf::Event& event) override;
         void update(float dt) override;

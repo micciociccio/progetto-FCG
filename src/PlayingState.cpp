@@ -10,7 +10,8 @@ PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
     circleTexture("assets/circle.png"),
     dotTexture("assets/dot.png"),
     circle(70.0f),
-    data(g.getLvlSetup(lvl)), 
+    data(g.getLvlSetup(lvl)),
+    level(lvl),
     failures(fails),
     font("assets/JetBrainsMonoNL-LightItalic.ttf"),
     textLvl(font, "", 80), textAttempts(font, "failures\n"+std::to_string(failures), 24),
@@ -35,7 +36,7 @@ PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
             AttachedDot d={dot, data.offset*static_cast<float>(i), line};
             attachedDots.push_back(d);
         }
-        level=(lvl>utils::lastLvl) ? utils::lastLvl : lvl;   //evita di stampare valori a schermo errati ogni volta che si usa level
+        // level=(lvl>utils::lastLvl) ? utils::lastLvl : lvl;   //evita di stampare valori a schermo errati ogni volta che si usa level
         textLvl.setString(std::to_string(level));
         utils::centerOrigin(textLvl); utils::centerOrigin(textAttempts);
         textLvl.setPosition({circle.getPosition().x, circle.getPosition().y});
@@ -51,6 +52,9 @@ void PlayingState::handleEvent(const sf::Event& event){
             flyingDot=waitingDots.front();
             waitingDots.erase(waitingDots.begin());
             game.playSound(SoundEffect::DotShot);
+        }
+        else if(keyPressed->code==sf::Keyboard::Key::Escape){
+            game.changeState(std::make_unique<MenuState>(game));
         }
     }
 }
