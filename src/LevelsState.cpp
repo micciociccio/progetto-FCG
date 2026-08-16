@@ -7,19 +7,22 @@
 LevelsState::LevelsState(Game& g)
 :   game(g),
     userLevel(game.getUserLvl()),
-    descMsg(game.getGenFont(), "Inserisci un livello da giocare", 22),
-    lvlBox(game.getGenFont(), "", 30),
-    warnMsg(game.getGenFont(), "Livello massimo da poter scegliere: "+std::to_string(userLevel), 20),
+    descMsg(game.getGenFont(), "Enter a level\n to play", 47),
+    lvlBox(game.getGenFont(), "", 50),
+    warnMsg(game.getGenFont(), "Maximum level\n you can choose: "+std::to_string(userLevel), 40),
     rect({140.0f, 70.0f})
     {
+        descMsg.setOutlineThickness(0.4f); lvlBox.setOutlineThickness(0.4f); warnMsg.setOutlineThickness(0.4f);
+        descMsg.setOutlineColor(sf::Color::Black); lvlBox.setOutlineColor(sf::Color::Black); warnMsg.setOutlineColor(sf::Color::Black);
+        warnMsg.setLineAlignment(sf::Text::LineAlignment::Center); descMsg.setLineAlignment(sf::Text::LineAlignment::Center);
         utils::centerOrigin(descMsg); utils::centerOrigin(lvlBox); utils::centerOrigin(warnMsg);
         sf::FloatRect rectBounds=rect.getLocalBounds();
         rect.setOrigin({
             rectBounds.position.x+rectBounds.size.x/2.0f,
             rectBounds.position.y+rectBounds.size.y/2.0f
         });
-        rect.setPosition({utils::width/2.0f, utils::height/2.0f-100.0f});
-        descMsg.setPosition({rect.getPosition().x, rect.getPosition().y-140.0f});
+        rect.setPosition({utils::width/2.0f, utils::height/2.0f-60.0f});
+        descMsg.setPosition({rect.getPosition().x, rect.getPosition().y-170.0f});
         lvlBox.setPosition({rect.getPosition().x, rect.getPosition().y});
         warnMsg.setPosition({rect.getPosition().x, rect.getPosition().y+200.0f});
         rect.setFillColor(sf::Color::Transparent);

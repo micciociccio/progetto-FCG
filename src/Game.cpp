@@ -12,8 +12,8 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
     circleTexture("assets/circle.png"),
     levelContainers(loadAllLvl("assets/levels.txt")),
     userLvl(resumeLevel("assets/lvl.txt")),
-    genFont("assets/JetBrainsMonoNL-LightItalic.ttf"),   //generic font
-    titleFont("assets/DejavuSansMono-5m7L.ttf"){   //title font
+    genFont("assets/Fredoka-VariableFont_wdth,wght.ttf"),   //generic font
+    titleFont("assets/Nunito-VariableFont_wght.ttf"){   //title font
         textureBg.setSmooth(true); dotTexture.setSmooth(true); circleTexture.setSmooth(true);
         window.setVerticalSyncEnabled(true);
         sf::Vector2u textureSize=textureBg.getSize();
@@ -22,7 +22,7 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
             utils::height/static_cast<float>(textureSize.y)
         );
         background.setScale({scale, scale});
-        std::vector<std::string> files={"assets/dotShot.wav", "assets/lvlPassed.mp3", "assets/lvlFailed.wav"};
+        std::vector<std::string> files={"assets/dotShot.wav", "assets/menuSelect.mp3", "assets/lvlPassed.mp3", "assets/lvlFailed.wav"};
         //doppio loop obbligatorio perchè in caso di resize il vector modifica i propri indirizzi che poi saranno inaccessibili da sounds[]
         for(std::size_t i=0; i<files.size(); i++){
             sf::SoundBuffer sb(files[i]);

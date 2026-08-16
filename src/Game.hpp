@@ -10,8 +10,9 @@ class State;   //dichiarazione condivisa per il compile time
 
 enum class SoundEffect : std::size_t{ // 0->DotShot, 1->lvlPassed, 2->lvlFailed
     DotShot,
-    lvlPassed,
-    lvlFailed
+    MenuSelect,
+    LvlPassed,
+    LvlFailed
 };
 
 enum class Textures : std::size_t{
