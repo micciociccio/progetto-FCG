@@ -33,8 +33,8 @@ std::vector<LevelData> loadAllLvl(const std::string& path){
     return levels;
 }
 
-std::size_t resumeLevel(const std::string& path){
-    std::size_t level=1, tempLvl;   //default starting level
+unsigned resumeLevel(const std::string& path){
+    unsigned level=1, tempLvl;   //default starting level
     std::ifstream file(path);
     if(!file.is_open()){
         std::cerr<<"LevelLoader: impossibile trovare l'ultimo livello dell'utente"<<"\n";
@@ -50,8 +50,8 @@ std::size_t resumeLevel(const std::string& path){
     return level;
 }
 
-void writeLevel(const std::string& path, std::size_t level){
-    if(level>utils::lastLvl) level=10;
+void writeLevel(const std::string& path, unsigned level){
+    level=(level>utils::lastLvl) ? utils::lastLvl : level;
     std::ofstream file(path);
     if(file.is_open()){   //se c'è stato un problema con i file .txt verrà semplicemente eseguito ogni volta il livello di default
         file << "# file per la persistenza dei livelli rispetto all'utente in locale\n"

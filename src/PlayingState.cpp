@@ -11,12 +11,12 @@ PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
     data(g.getLvlSetup(lvl)),
     level(lvl),
     failures(fails),
-    textLvl(game.getGenFont(), "", 85), textAttempts(game.getGenFont(), "failures\n"+std::to_string(failures), 37),
-    rs(data.rotationSpeed){
+    textLvl(game.getFont(Fonts::Num), "", 80), textAttempts(game.getFont(Fonts::Gen), "failures\n"+std::to_string(failures), 37),
+    rotationSpeed(data.rotationSpeed){
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
         circle.setTexture(&game.getTexture(Textures::Circle));
-        for(int i=0; i<data.waitingD; i++){
+        for(unsigned i=0; i<data.waitingD; i++){
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
             float startY=utils::height-350.0f;
@@ -24,19 +24,18 @@ PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
             dot.setTexture(&game.getTexture(Textures::Dot));
             waitingDots.push_back(dot);   //dots da aggiungere a circle
         }
-        for(int i=0; i<data.attachedD; i++){   //dots già in rotazione su circle
+        for(unsigned i=0; i<data.attachedD; i++){   //dots già in rotazione su circle
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
             dot.setTexture(&game.getTexture(Textures::Dot));
-            sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+            sf::VertexArray line(sf::PrimitiveType::Lines, 2);   //spessore 1px, 2 vertici
             AttachedDot d={dot, data.offset*static_cast<float>(i), line};
             attachedDots.push_back(d);
         }
         textLvl.setString(std::to_string(level));
         utils::centerOrigin(textLvl); utils::centerOrigin(textAttempts);
         textLvl.setPosition({circle.getPosition().x, circle.getPosition().y});
-        textAttempts.setOutlineThickness(0.4f); 
-        textAttempts.setOutlineColor(sf::Color::Black);
+        utils::makeBorder(textAttempts, 0.4f, sf::Color::Black);
         textAttempts.setLineAlignment(sf::Text::LineAlignment::Center);
         textAttempts.setPosition({155.0f, utils::height-90.0f});
 }
@@ -57,7 +56,7 @@ void PlayingState::handleEvent(const sf::Event& event){
 }
 
 void PlayingState::update(float dt){
-    //player ha schiacciato Space dobbiamo far muovere il dot corrente
+    //player ha schiacciato Space dobbiamo spostare il dot corrente
     if(flyingDot){
         sf::Vector2f pos=flyingDot->getPosition();
         pos.y-=dt*launchSpeed;
@@ -76,15 +75,15 @@ void PlayingState::update(float dt){
         if(speedTimer>=changeInterval){
             speedTimer=0.0f;
             std::uniform_real_distribution<float> dis(data.rotationSpeed*data.minRS, data.rotationSpeed*data.maxRS);
-            rs=dis(gen);
+            rotationSpeed=dis(gen);
             if(data.changeRD){   //implementazione del cambio casuale di verso rotazione
                 std::uniform_int_distribution<int> dirDis(0, 1);
                 direction=(dirDis(gen)==0)? -1.0 : 1.0;
             }
-            rs=dis(gen)*direction;
+            rotationSpeed=dis(gen)*direction;
         }
     }  
-    roundRotation+=sf::degrees(dt*rs);
+    roundRotation+=sf::degrees(dt*rotationSpeed);
     sf::Vector2f center=circle.getPosition();
     for(AttachedDot& dot : attachedDots){
         sf::Angle totalAngle=roundRotation+dot.offset;
@@ -116,7 +115,7 @@ void PlayingState::render(sf::RenderWindow& window){
 }
 
 void PlayingState::updateWaitingDots(float dt){
-    for(size_t i=0; i<waitingDots.size(); i++){
+    for(std::size_t i=0; i<waitingDots.size(); i++){
         sf::Vector2f pos=waitingDots[i].getPosition();
         float targetY=utils::height-350.0f + static_cast<float>(i) * 48.0f;
         if(pos.y>targetY){
@@ -126,7 +125,7 @@ void PlayingState::updateWaitingDots(float dt){
     }
 }
 
-bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeState() che distrugge lo stato corrente per propagare il cambio
+bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeState() che distrugge lo stato corrente per propagare il cambio ed evitare segmentation fault
     sf::Vector2f center=circle.getPosition();
     sf::Vector2f toDot=flyingDot->getPosition()-center;
     sf::Angle absoluteAngle=sf::radians(std::atan2(toDot.y, toDot.x));
@@ -153,7 +152,7 @@ bool PlayingState::attachFlyingDot(){   //return true solo in caso di changeStat
 }
 
 bool PlayingState::checkCollision(const AttachedDot& dot){
-    for(size_t i=0; i<attachedDots.size(); i++){
+    for(std::size_t i=0; i<attachedDots.size(); i++){
         sf::Vector2f diff=dot.shape.getPosition()-attachedDots[i].shape.getPosition();
         float distance=std::sqrt(diff.x*diff.x+diff.y*diff.y);
         float sumRad=dot.shape.getRadius()+attachedDots[i].shape.getRadius();

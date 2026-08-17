@@ -8,7 +8,8 @@ class Game;
 class EndGameState : public State{
     Game& game;
     bool gameover;
-    unsigned level, selectedIndex, failures;
+    unsigned level, failures;
+    std::size_t selectedIndex;
     sf::Text title, textAttempts, textLevel;
     std::vector<sf::Text> options;
     public:

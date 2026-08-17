@@ -1,14 +1,16 @@
+#pragma once
 #include "SFML/Graphics.hpp"
 #include "State.hpp"
 #include <vector>
 
-class Game;   //forward declaration
+class Game;
 
 class MenuState : public State{
     Game& game;
     sf::Text title;
     std::vector<sf::Text> options;
-    unsigned selectedIndex=0, userLevel;
+    std::size_t selectedIndex;
+    unsigned userLevel;
     public:
         explicit MenuState(Game& g);
         ~MenuState();

@@ -7,13 +7,14 @@
 Game::Game(unsigned width, unsigned height, const std::string& title)
 :   window(sf::VideoMode({width, height}), title, sf::Style::Titlebar),
     textureBg("assets/background.jpg"),
-    background(textureBg),
     dotTexture("assets/dot.png"),
     circleTexture("assets/circle.png"),
+    background(textureBg),
     levelContainers(loadAllLvl("assets/levels.txt")),
     userLvl(resumeLevel("assets/lvl.txt")),
+    titleFont("assets/Nunito-VariableFont_wght.ttf"),   //title font
     genFont("assets/Fredoka-VariableFont_wdth,wght.ttf"),   //generic font
-    titleFont("assets/Nunito-VariableFont_wght.ttf"){   //title font
+    numFont("assets/JetBrainsMonoNL-LightItalic.ttf"){   
         textureBg.setSmooth(true); dotTexture.setSmooth(true); circleTexture.setSmooth(true);
         window.setVerticalSyncEnabled(true);
         sf::Vector2u textureSize=textureBg.getSize();
@@ -32,7 +33,7 @@ Game::Game(unsigned width, unsigned height, const std::string& title)
             sf::Sound sound(soundsBuffer[i]);
             sounds.push_back(sound);
         }
-        //mostriamo il primo State del Menù
+        //mostriamo il primo State -> Menù
 		currentState=std::make_unique<MenuState>(*this);
 }
 
@@ -47,7 +48,7 @@ void Game::run(){
 	while(window.isOpen()){
         float dt=std::min(clock.restart().asSeconds(), 0.05f);
     	while(const std::optional<sf::Event> event=window.pollEvent()){
-            currentState->handleEvent(*event);   //dispatch dinamico allo stato attivo, con * deferenzio l'optional dell'evento 
+            currentState->handleEvent(*event);   //dispatch dinamico allo State attivo, con * deferenzio l'optional dell'evento 
         }
         currentState->update(dt);
         window.clear();
@@ -61,8 +62,8 @@ void Game::requestClose(){
 	window.close();
 }
 
-LevelData Game::getLvlSetup(std::size_t lvl){
-    std::size_t index=std::min(lvl-1, utils::lastLvl-1);
+LevelData Game::getLvlSetup(unsigned lvl){
+    std::size_t index=std::min(static_cast<std::size_t>(lvl-1), static_cast<std::size_t>(utils::lastLvl-1));
     return levelContainers[index];
 }
 
@@ -88,10 +89,13 @@ const sf::Texture& Game::getTexture(Textures t){
     }
 }
 
-const sf::Font& Game::getGenFont(){
-    return genFont;
+const sf::Font& Game::getFont(Fonts f){
+    if(f==Fonts::Title) return titleFont;
+    else if(f==Fonts::Num) return numFont;
+    else if(f==Fonts::Gen) return genFont;
+    else{
+        std::cerr<<"Game: font f non caricato/trovato, usato sf::Font generale"<<"\n";
+        return genFont;
+    }
 }
 
-const sf::Font& Game::getTitleFont(){
-    return titleFont;
-}

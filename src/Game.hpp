@@ -8,14 +8,20 @@
 
 class State;   //dichiarazione condivisa per il compile time
 
-enum class SoundEffect : std::size_t{ // 0->DotShot, 1->lvlPassed, 2->lvlFailed
+enum class SoundEffect{ // 0->DotShot, 1->MenuSelect, 2->LvlPassed, 3->LvlFailed
     DotShot,
     MenuSelect,
     LvlPassed,
     LvlFailed
 };
 
-enum class Textures : std::size_t{
+enum class Fonts{   //general, title and Num fonts
+    Title,
+    Num,
+    Gen
+};
+
+enum class Textures{
     Dot,
     Circle
 };
@@ -28,21 +34,20 @@ class Game{
     std::vector<LevelData> levelContainers;
     std::vector<sf::SoundBuffer> soundsBuffer;
     std::vector<sf::Sound> sounds;
-    std::size_t userLvl;
-    sf::Font genFont, titleFont;   //general and title fonts
-    //font caricati una sola volta dal file a cui fanno riferimento tutti gli :State 
+    unsigned userLvl;
+    sf::Font titleFont, genFont, numFont;   
+    //font caricati una sola volta dal file al quale fanno riferimento tutti gli :State 
     public:
         Game(unsigned width, unsigned height, const std::string& title);
         ~Game();
         void changeState(std::unique_ptr<State> newState);
         void run();
         void requestClose();
-        LevelData getLvlSetup(std::size_t lvl);
+        LevelData getLvlSetup(unsigned lvl);
         void playSound(SoundEffect index);
         unsigned getUserLvl();
         void updateUserLvl(unsigned newLvl);
         const sf::Texture& getTexture(Textures t);
-        const sf::Font& getTitleFont();
-        const sf::Font& getGenFont();
+        const sf::Font& getFont(Fonts f);
 };
 

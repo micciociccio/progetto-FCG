@@ -6,7 +6,7 @@ namespace utils{
     inline constexpr float width=480;
     inline constexpr float height=800;
 
-    inline constexpr std::size_t lastLvl=10;
+    inline constexpr unsigned lastLvl=10;
 
     inline void centerOrigin(sf::Text& t){
         sf::FloatRect bounds=t.getLocalBounds();
@@ -20,5 +20,10 @@ namespace utils{
             }
             else v[i].setFillColor(sf::Color::White);
         }
+    }
+
+    inline void makeBorder(sf::Text& t, float value, sf::Color color){
+        t.setOutlineThickness(value);
+        t.setOutlineColor(color);
     }
 }

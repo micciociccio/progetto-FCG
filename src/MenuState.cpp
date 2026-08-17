@@ -7,22 +7,21 @@
 
 MenuState::MenuState(Game& g)
 :   game(g),
-    title(game.getTitleFont(), "aa", 200),
+    title(game.getFont(Fonts::Title), "aa", 200),
     selectedIndex(0),
     userLevel(game.getUserLvl()){
         utils::centerOrigin(title);
         title.setPosition({utils::width/2.0f, 170.0f});
         std::vector<std::string> labels={"Levels", "Play", "Exit"};
         for(std::size_t i=0; i<labels.size(); i++){
-            sf::Text option(game.getGenFont(), labels[i], 40);
+            sf::Text option(game.getFont(Fonts::Gen), labels[i], 40);
             option.setOutlineThickness(0.4f);
             option.setOutlineColor(sf::Color::Black);
             utils::centerOrigin(option);
             option.setPosition({utils::width/2.0f, 450.0f + static_cast<float>(i) * 90.0f});
             options.push_back(option);
         }
-        title.setOutlineThickness(1.3f);
-        title.setOutlineColor(sf::Color::Black);
+        utils::makeBorder(title, 1.3f, sf::Color::Black);
         utils::updateColors(options, selectedIndex);
 }   
 
@@ -31,14 +30,14 @@ MenuState::~MenuState()=default;
 void MenuState::handleEvent(const sf::Event& event){
     if(const auto* keyPressed=event.getIf<sf::Event::KeyPressed>()){
         if(keyPressed->code==sf::Keyboard::Key::Up){
-            if(selectedIndex>0){
+            if(selectedIndex>0){   //se possiamo eseguire uno spostamento del "focus" decrementiamo index, play sound e update grafico
                 selectedIndex--;
                 game.playSound(SoundEffect::MenuSelect);
                 utils::updateColors(options, selectedIndex);
             } 
         }
         else if(keyPressed->code==sf::Keyboard::Key::Down){
-            if(static_cast<std::size_t>(selectedIndex) < options.size()-1){
+            if(selectedIndex < options.size()-1){
                 selectedIndex++;
                 game.playSound(SoundEffect::MenuSelect);
                 utils::updateColors(options, selectedIndex);
