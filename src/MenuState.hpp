@@ -5,7 +5,7 @@
 
 class Game;
 
-class MenuState : public State{
+class MenuState : public State{   //estensione di State
     Game& game;
     sf::Text title;
     std::vector<sf::Text> options;

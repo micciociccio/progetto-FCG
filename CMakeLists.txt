@@ -19,7 +19,7 @@ add_executable(
     src/MenuState.cpp
     src/PlayingState.cpp
     src/EndGameState.cpp
-    src/LevelLoader.cpp
+    src/LevelsManager.cpp
     src/LevelsState.cpp
 )
 target_compile_features(aa_game PRIVATE cxx_std_17)

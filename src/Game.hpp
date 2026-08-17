@@ -4,7 +4,6 @@
 #include "LevelData.hpp"
 #include <memory>
 #include <vector>
-#include <iostream>
 
 class State;   //dichiarazione condivisa per il compile time
 
@@ -36,16 +35,16 @@ class Game{
     std::vector<sf::Sound> sounds;
     unsigned userLvl;
     sf::Font titleFont, genFont, numFont;   
-    //font caricati una sola volta dal file al quale fanno riferimento tutti gli :State 
+    //fonts caricati una sola volta da disco, ai quali fanno riferimento tutti gli :State 
     public:
         Game(unsigned width, unsigned height, const std::string& title);
         ~Game();
         void changeState(std::unique_ptr<State> newState);
         void run();
         void requestClose();
-        LevelData getLvlSetup(unsigned lvl);
+        const LevelData getLvlSetup(unsigned lvl);
         void playSound(SoundEffect index);
-        unsigned getUserLvl();
+        const unsigned getUserLvl();
         void updateUserLvl(unsigned newLvl);
         const sf::Texture& getTexture(Textures t);
         const sf::Font& getFont(Fonts f);

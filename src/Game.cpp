@@ -2,10 +2,11 @@
 #include "State.hpp"
 #include "MenuState.hpp"
 #include "GameUtils.hpp"
-#include "LevelLoader.hpp"
+#include "LevelsManager.hpp"
+#include <iostream>
 
 Game::Game(unsigned width, unsigned height, const std::string& title)
-:   window(sf::VideoMode({width, height}), title, sf::Style::Titlebar),
+:   window(sf::VideoMode({width, height}), title, sf::Style::Titlebar),   //escludiamo esplicitamente il resize e la chiusura X
     textureBg("assets/background.jpg"),
     dotTexture("assets/dot.png"),
     circleTexture("assets/circle.png"),
@@ -62,16 +63,16 @@ void Game::requestClose(){
 	window.close();
 }
 
-LevelData Game::getLvlSetup(unsigned lvl){
-    std::size_t index=std::min(static_cast<std::size_t>(lvl-1), static_cast<std::size_t>(utils::lastLvl-1));
-    return levelContainers[index];
+const LevelData Game::getLvlSetup(unsigned lvl){
+    unsigned index=std::min((lvl-1), utils::lastLvl-1);
+    return levelContainers[static_cast<std::size_t>(index)];
 }
 
 void Game::playSound(SoundEffect index){
     sounds[static_cast<std::size_t>(index)].play();
 }
 
-unsigned Game::getUserLvl(){
+const unsigned Game::getUserLvl(){
     return userLvl;
 }
 
@@ -91,8 +92,8 @@ const sf::Texture& Game::getTexture(Textures t){
 
 const sf::Font& Game::getFont(Fonts f){
     if(f==Fonts::Title) return titleFont;
-    else if(f==Fonts::Num) return numFont;
     else if(f==Fonts::Gen) return genFont;
+    else if(f==Fonts::Num) return numFont;
     else{
         std::cerr<<"Game: font f non caricato/trovato, usato sf::Font generale"<<"\n";
         return genFont;

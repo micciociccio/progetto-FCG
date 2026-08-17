@@ -4,7 +4,7 @@
 #include "MenuState.hpp"
 #include "PlayingState.hpp"
 #include "GameUtils.hpp"
-#include "LevelLoader.hpp"
+#include <string>
 
 EndGameState::EndGameState(Game& g, bool go, unsigned lvl, unsigned fails)
 :   game(g),

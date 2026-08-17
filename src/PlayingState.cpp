@@ -16,13 +16,13 @@ PlayingState::PlayingState(Game& g, unsigned lvl, unsigned fails)
         circle.setOrigin({circle.getRadius(), circle.getRadius()});   //cerchio centrale
         circle.setPosition({utils::width/2.0f, utils::height/3.2f});
         circle.setTexture(&game.getTexture(Textures::Circle));
-        for(unsigned i=0; i<data.waitingD; i++){
+        for(unsigned i=0; i<data.waitingD; i++){   //dots da aggiungere a circle
             sf::CircleShape dot(14.0f);
             dot.setOrigin({dot.getRadius(), dot.getRadius()});
             float startY=utils::height-350.0f;
             dot.setPosition({utils::width/2.0f, startY + static_cast<float>(i) * 48.0f});
             dot.setTexture(&game.getTexture(Textures::Dot));
-            waitingDots.push_back(dot);   //dots da aggiungere a circle
+            waitingDots.push_back(dot);   
         }
         for(unsigned i=0; i<data.attachedD; i++){   //dots già in rotazione su circle
             sf::CircleShape dot(14.0f);
@@ -74,7 +74,7 @@ void PlayingState::update(float dt){
         speedTimer+=dt;
         if(speedTimer>=changeInterval){
             speedTimer=0.0f;
-            std::uniform_real_distribution<float> dis(data.rotationSpeed*data.minRS, data.rotationSpeed*data.maxRS);
+            std::uniform_real_distribution<float> dis(data.rotationSpeed*data.minRS, data.rotationSpeed*data.maxRS);   //distribuzione dalla quale gen "pescherà" un numero
             rotationSpeed=dis(gen);
             if(data.changeRD){   //implementazione del cambio casuale di verso rotazione
                 std::uniform_int_distribution<int> dirDis(0, 1);

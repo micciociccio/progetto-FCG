@@ -10,7 +10,7 @@ class Game;
 
 struct AttachedDot{
     sf::CircleShape shape;
-    sf::Angle offset;   //posizione che evita il "collasso" dei cerchi durante la rotazione nel tempo
+    sf::Angle offset;   //posizione che evita il "collasso" dei dots durante la rotazione nel tempo
     sf::VertexArray line;  
 };
 
@@ -25,7 +25,7 @@ class PlayingState : public State{
     std::vector<AttachedDot> attachedDots;
     sf::Angle roundRotation=sf::degrees(0.0f);
     float rotationSpeed, speedTimer=0.0f, changeInterval=1.5f, direction=1.0f;   //default direction "monoverso orario"
-    std::mt19937 gen{std::random_device{}()}; 
+    std::mt19937 gen{std::random_device{}()};   //inzializzazione del generatore di numeri casuali, bisognerà affiancarci una distribuzione
     static constexpr float launchSpeed=600.0f;
     static constexpr float reloadSpeed=220.0f;
     // static constexpr float rotationSpeed=120.0f;   estratta dal .txt per ogni livello

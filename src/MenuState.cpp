@@ -15,8 +15,7 @@ MenuState::MenuState(Game& g)
         std::vector<std::string> labels={"Levels", "Play", "Exit"};
         for(std::size_t i=0; i<labels.size(); i++){
             sf::Text option(game.getFont(Fonts::Gen), labels[i], 40);
-            option.setOutlineThickness(0.4f);
-            option.setOutlineColor(sf::Color::Black);
+            utils::makeBorder(option, 0.4f, sf::Color::Black);
             utils::centerOrigin(option);
             option.setPosition({utils::width/2.0f, 450.0f + static_cast<float>(i) * 90.0f});
             options.push_back(option);
@@ -58,6 +57,7 @@ void MenuState::handleEvent(const sf::Event& event){
 }
 
 void MenuState::update(float dt){
+
 }
 
 void MenuState::render(sf::RenderWindow& window){
