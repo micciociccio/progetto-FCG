@@ -1,6 +1,6 @@
 # pattern da seguire 
 # waitingDots attachedD offset rotationSpeed changeRS minRS maxRS changeRD
-# ogni valore deve essere separato dal successivo con almeno uno Space, min/max-RS sono costanti moltiplicative applicate a rs base
+# ogni valore deve essere separato dal successivo con almeno uno Space, min/max-RS sono costanti moltiplicative applicate a rotationSpeed base
 # ogni riga è un setup per un livello, ogni riga vuota o #commentata verrà ignorata
 
 5 0 0 60.0 0 0 0 0

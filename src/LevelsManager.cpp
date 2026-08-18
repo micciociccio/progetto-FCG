@@ -55,7 +55,7 @@ void writeLevel(const std::string& path, unsigned level){
     std::ofstream file(path);
     if(file.is_open()){   //se c'è stato un problema con i file .txt verrà semplicemente eseguito ogni volta il livello di default
         file << "# file per la persistenza dei livelli rispetto all'utente in locale\n"
-            << "# si scrive su una riga un solo intero indicante il livello da caricare\n\n"
+            << "# si scrive su una riga un solo intero indicante il livello più alto non ancora superato\n\n"
             << level;
     }
 }

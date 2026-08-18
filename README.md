@@ -27,5 +27,14 @@ Per quanto riguarda l'UI, simulando un gioco mobile, il mouse non è intercettat
 
 - **Navigazione nei Menu:** Utilizzare i tasti **Arrow up** (↑) e **Arrow down** (↓) per scorrere le opzioni a scelta multipla.
 - **Conferma:** Utilizzare il tasto **Enter** (↵) per selezionare l'opzione.
+- **Playing State** All'interno dell'interfaccia di gioco vera e propria il tasto da usare per lanciare i dots è *Space*
 - **Uscita:** L'opzione *Exit* presente nei menu richiede la chiusura della finestra. La chiusura non può avvenire tramite la classica `✖` nella topBar. Sulla finestra non è inoltre possibile fare il resize, mantenendo così una mobile viewport fissa.
-- **Tasto di sblocco (Esc):** In ogni stato dell'applicazione è possibile tornare al Menu iniziale tramite il tasto **Esc** (Escape). Questa funzionalità è stata introdotta nella tappa 11 che aggiunge `LevelsState`, con la possibilità di digitare il livello da rigiocare tramite tastiera numerica e confermarlo premendo **Enter** (↵).
+- **Tornare al MenuState (Esc):** In ogni stato dell'applicazione è possibile tornare al Menu iniziale tramite il tasto **Esc** (Escape). Questa funzionalità è stata introdotta nella tappa 11 che aggiunge `LevelsState`, con la possibilità di digitare il livello da rigiocare tramite tastiera numerica e confermarlo premendo **Enter** (↵).
+
+
+### Raccomandazioni
+
+Le tappe rappresentano l'evoluzione del progetto, tutte quante compilano e vengono eseguite nel modo corretto, ma in alcuni stages l'UX non è stata la priorità:
+- **Stage 02:** C'è già la funzione checkCollision(), ma in caso i dots venissero inseriti tutti nel cerchio bisogna killare con ctrl+c il programma. Non era ancora stato implementato il ritorno al Menu
+- **Stage 03:** In caso di vittoria non si torna mai al MenuState dove è presente il tasto *Exit*, basta quindi provocare una collisione in gioco
+- **Stage 04:** *Next level* e *Play again* riconducono sempre all'unico setup di PlayingState presente in quel momento, è la struttura per le tappe successive
