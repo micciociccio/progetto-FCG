@@ -328,8 +328,14 @@ update_command() {
         exit 1
     fi
 
+    #FIX: recupera il commit a cui puntava il tag, poichè se il quinto argomento in input mancava lo script ricreava il tag da zero
+    #facendolo puntare ad HEAD, cioè il commit attuale, questo rompeva la timeline degli Stages
+
+    local target_commit
+    target_commit=$(git rev-parse "$tag_name^{commit}")
+
     print_info "Updating tag: $tag_name"
-    git tag -a -f -m "$description" "$tag_name"
+    git tag -a -f -m "$description" "$tag_name" "$target_commit"
 
     if [ $? -eq 0 ]; then
         print_info "Tag $tag_name updated successfully"
